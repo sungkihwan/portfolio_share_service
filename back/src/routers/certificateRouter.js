@@ -7,6 +7,7 @@ const certificateRouter = Router();
 certificateRouter.use(login_required);
 
 certificateRouter.post("/certificate/create", async (req, res, next) => {
+  // validation 필요함
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
@@ -14,26 +15,63 @@ certificateRouter.post("/certificate/create", async (req, res, next) => {
       );
     }
 
-    // req (request) 에서 데이터 가져오기
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    // 위 데이터를 유저 db에 추가하기
-    const newUser = await userAuthService.addUser({
-      name,
-      email,
-      password,
+    // 데이터를 db에 추가하기
+    const newCertificate = await certificateService.create({
+      user_id: req.body.user_id,
+      title: req.body.title,
+      description: req.body.description,
+      when_date: req.body.when_date,
     });
 
-    if (newUser.errorMessage) {
-      throw new Error(newUser.errorMessage);
+    if (newCertificate.errorMessage) {
+      throw new Error(newCertificate.errorMessage);
     }
 
-    res.status(201).json(newUser);
+    res.status(201).json(newCertificate);
   } catch (error) {
     next(error);
   }
 });
+
+certificateRouter.get("/certificates/:id", async (req, res, next) => {
+  try {
+    const certificate = await certificateService.findById(req.params.id);
+
+    if (certificate.errorMessage) {
+      throw new Error(certificate.errorMessage);
+    }
+
+    res.status(201).json(certificate);
+  } catch (error) {
+    next(error)
+  }
+})
+
+certificateRouter.put("/certificates/:id", async (req, res, next) => {
+  try {
+    const updatedCertificate = await certificateService.update(req.params.id, {
+      title: req.body.title,
+      description: req.body.description,
+      when_date: req.body.when_date,
+    });
+
+    if (updatedCertificate.errorMessage) {
+      throw new Error(updatedCertificate.errorMessage);
+    }
+
+    res.status(201).json(updatedCertificate);
+  } catch (error) {
+    next(error)
+  }
+})
+
+certificateRouter.get("/certificatelist/:user_id", async (req, res, next) => {
+  try {
+    const certificateList = await certificateService.findAllByUserId(req.params.user_id);
+    res.status(201).json(certificateList);
+  } catch (error) {
+    next(error)
+  }
+})
 
 export { certificateRouter };

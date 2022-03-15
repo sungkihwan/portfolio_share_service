@@ -1,37 +1,33 @@
-import { CertificateModel } from "../schemas/user";
+import { CertificateModel } from "../schemas/certificate";
 
 class Certificate {
-  static async create({ newUser }) {
-    const createdNewUser = await UserModel.create(newUser);
-    return createdNewUser;
+  static async create(newCertificate) {
+    return await CertificateModel.create(newCertificate);
   }
 
   static async findByEmail({ email }) {
-    const user = await UserModel.findOne({ email });
+    const user = await CertificateModel.findOne({ email });
     return user;
   }
 
-  static async findById({ user_id }) {
-    const user = await UserModel.findOne({ id: user_id });
-    return user;
+  static async findById(id) {
+    return await CertificateModel.findOne({ id });
   }
 
-  static async findAll() {
-    const users = await UserModel.find({});
-    return users;
+  static async findAllByUserId(user_id) {
+    return await CertificateModel.find({ user_id });
   }
 
-  static async update({ user_id, fieldToUpdate, newValue }) {
-    const filter = { id: user_id };
+  static async update({ id, fieldToUpdate, newValue }) {
+    const filter = { id: id };
     const update = { [fieldToUpdate]: newValue };
     const option = { returnOriginal: false };
 
-    const updatedUser = await UserModel.findOneAndUpdate(
+    return await CertificateModel.findOneAndUpdate(
       filter,
       update,
       option
     );
-    return updatedUser;
   }
 }
 
