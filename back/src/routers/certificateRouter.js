@@ -49,10 +49,15 @@ certificateRouter.get("/certificates/:id", async (req, res, next) => {
 
 certificateRouter.put("/certificates/:id", async (req, res, next) => {
   try {
+
+    const title = req.body.title ?? null;
+    const description = req.body.description ?? null;
+    const when_date = req.body.when_date ?? null;
+
     const updatedCertificate = await certificateService.update(req.params.id, {
-      title: req.body.title,
-      description: req.body.description,
-      when_date: req.body.when_date,
+      title,
+      description,
+      when_date,
     });
 
     if (updatedCertificate.errorMessage) {

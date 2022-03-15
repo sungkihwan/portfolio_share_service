@@ -19,8 +19,8 @@ class certificateService {
     return certificate;
   }
 
-  static async findAllByUserId(user_id) {    
-    return await User.findAll(user_id);
+  static async findAllByUserId(user_id) {
+    return await Certificate.findAllByUserId(user_id);
   }
 
   static async update(id, toUpdate) {
