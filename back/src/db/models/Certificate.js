@@ -18,9 +18,9 @@ class Certificate {
     return await CertificateModel.find({ user_id });
   }
 
-  static async update({ id, fieldToUpdate, newValue }) {
-    const filter = { id: id };
-    const update = { [fieldToUpdate]: newValue };
+  static async update({ id, toUpdate }) {
+    const filter = { id };
+    const update = { "$set": toUpdate }
     const option = { returnOriginal: false };
 
     return await CertificateModel.findOneAndUpdate(
