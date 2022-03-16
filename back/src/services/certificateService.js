@@ -19,6 +19,10 @@ class certificateService {
     return certificate;
   }
 
+  static async deleteById(id) {
+    return await Certificate.deleteById(id);
+  }
+
   static async findAllByUserId(user_id) {
     return await Certificate.findAllByUserId(user_id);
   }
@@ -31,18 +35,10 @@ class certificateService {
       return { errorMessage };
     }
 
-    if (!toUpdate.title) {
-        delete toUpdate.title
-    }
-
-    if (!toUpdate.description) {
-        delete toUpdate.description
-    }
-
-    if (!toUpdate.when_date) {
-        delete toUpdate.when_date
-    }
-
+    if (!toUpdate.title) delete toUpdate.title
+    if (!toUpdate.description) delete toUpdate.description
+    if (!toUpdate.when_date) delete toUpdate.when_date
+    
     return await Certificate.update({ id, toUpdate });
   }
 }

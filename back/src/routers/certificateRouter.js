@@ -47,6 +47,15 @@ certificateRouter.get("/certificates/:id", async (req, res, next) => {
   }
 })
 
+certificateRouter.delete("/certificates/:id", async (req, res, next) => {
+  try {
+    const deletedCount = await certificateService.deleteById(req.params.id);
+    res.status(200).json(deletedCount);
+  } catch (error) {
+    next(error)
+  }
+})
+
 certificateRouter.put("/certificates/:id", async (req, res, next) => {
   try {
 

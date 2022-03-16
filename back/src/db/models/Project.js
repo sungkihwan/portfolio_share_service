@@ -9,7 +9,11 @@ class Project {
         return await ProjectModel.findOne({ id });
     }
 
-    static async update({ id , toUpdate }) {
+    static async deleteById(id) {
+        return await ProjectModel.deleteOne({ id });
+    }
+
+    static async updateById({ id , toUpdate }) {
         const filter = { id };
         const update = { "$set": toUpdate }
         const option = { returnOriginal: false };

@@ -5,13 +5,12 @@ class Certificate {
     return await CertificateModel.create(newCertificate);
   }
 
-  static async findByEmail({ email }) {
-    const user = await CertificateModel.findOne({ email });
-    return user;
-  }
-
   static async findById(id) {
     return await CertificateModel.findOne({ id });
+  }
+
+  static async deleteById(id) {
+    return await CertificateModel.deleteOne({ id });
   }
 
   static async findAllByUserId(user_id) {

@@ -53,6 +53,15 @@ projectRouter.get("/projectlist/:user_id", async (req, res, next) => {
     }
 });
 
+projectRouter.delete("/projects/:id", async (req, res, next) => {
+    try {
+        const deletedCount = await projectService.deleteById(req.params.id);
+        res.status(200).send(deletedCount);
+    } catch (error) {
+        next(error);
+    }
+});
+
 projectRouter.put("/projects/:id", async (req, res, next) => {
     try {
         // URI로부터 사용자 id를 추출함.
@@ -66,7 +75,7 @@ projectRouter.put("/projects/:id", async (req, res, next) => {
         const toUpdate = { title, description, from_date, to_date };
 
         // 해당 프로젝트 아이디로 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
-        const updatedProject = await projectService.update({ id, toUpdate });
+        const updatedProject = await projectService.updateById({ id, toUpdate });
 
         if (updatedProject.errorMessage) {
             throw new Error(updatedProject.errorMessage);

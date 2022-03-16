@@ -21,7 +21,11 @@ class projectService {
         return project
     }
 
-    static async update({ id, toUpdate }) {
+    static async deleteById(id) {
+        return await Project.deleteById(id);
+    }
+
+    static async updateById({ id, toUpdate }) {
         
         const project = await Project.findById(id);
 
@@ -31,23 +35,12 @@ class projectService {
             return { errorMessage };
         }
 
-        if (!toUpdate.title) {
-            delete toUpdate.title
-        }
+        if (!toUpdate.title) delete toUpdate.title
+        if (!toUpdate.description) delete toUpdate.description
+        if (!toUpdate.from_date) delete toUpdate.from_date
+        if (!toUpdate.to_date) delete toUpdate.to_date
 
-        if (!toUpdate.description) {
-            delete toUpdate.description
-        }
-
-        if (!toUpdate.from_date) {
-            delete toUpdate.from_date
-        }
-
-        if (!toUpdate.to_date) {
-            delete toUpdate.to_date
-        }
-
-        return await Project.update({ id, toUpdate });
+        return await Project.updateById({ id, toUpdate });
     }
 
     static async findAllByUserId(user_id) {
