@@ -7,6 +7,9 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 const app = express();
 
+// 보안
+app.disable('x-powered-by') 
+
 // CORS 에러 방지
 app.use(cors());
 
