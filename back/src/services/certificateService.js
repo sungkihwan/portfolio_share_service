@@ -31,6 +31,18 @@ class certificateService {
       return { errorMessage };
     }
 
+    if (!toUpdate.title) {
+        delete toUpdate.title
+    }
+
+    if (!toUpdate.description) {
+        delete toUpdate.description
+    }
+
+    if (!toUpdate.when_date) {
+        delete toUpdate.when_date
+    }
+
     return await Certificate.update({ id, toUpdate });
   }
 }

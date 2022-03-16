@@ -31,6 +31,22 @@ class projectService {
             return { errorMessage };
         }
 
+        if (!toUpdate.title) {
+            delete toUpdate.title
+        }
+
+        if (!toUpdate.description) {
+            delete toUpdate.description
+        }
+
+        if (!toUpdate.from_date) {
+            delete toUpdate.from_date
+        }
+
+        if (!toUpdate.to_date) {
+            delete toUpdate.to_date
+        }
+
         return await Project.update({ id, toUpdate });
     }
 
