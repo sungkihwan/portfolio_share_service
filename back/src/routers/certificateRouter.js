@@ -41,7 +41,7 @@ certificateRouter.get("/certificates/:id", async (req, res, next) => {
       throw new Error(certificate.errorMessage);
     }
 
-    res.status(201).json(certificate);
+    res.status(200).json(certificate);
   } catch (error) {
     next(error)
   }
@@ -64,7 +64,7 @@ certificateRouter.put("/certificates/:id", async (req, res, next) => {
       throw new Error(updatedCertificate.errorMessage);
     }
 
-    res.status(201).json(updatedCertificate);
+    res.status(200).json(updatedCertificate);
   } catch (error) {
     next(error)
   }
@@ -73,7 +73,7 @@ certificateRouter.put("/certificates/:id", async (req, res, next) => {
 certificateRouter.get("/certificatelist/:user_id", async (req, res, next) => {
   try {
     const certificateList = await certificateService.findAllByUserId(req.params.user_id);
-    res.status(201).json(certificateList);
+    res.status(200).json(certificateList);
   } catch (error) {
     next(error)
   }
