@@ -11,9 +11,9 @@ class Education {
         return posts
     }
 
-    static async updateByPostId({ post_id ,updateInfo }){
+    static async updateByPostId({ post_id ,toUpdate }){
         const filter = { id: post_id }
-        const update = { updateInfo }
+        const update = { '$set' : toUpdate }
         const option = { returnOriginal: false }
 
         const updatePost = await EducationModel.findOneAndUpdate(
@@ -21,7 +21,6 @@ class Education {
             update,
             option
         )
-
         return updatePost
     }
 

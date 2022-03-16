@@ -23,27 +23,28 @@ class awardService {
         return award
     }
 
-    static async setAward({ award_id, title, description }){
+    static async setAward({ award_id, toUpdate }){
         let award = await Award.findAwardById({id: award_id})
         if(!award){
             const errorMessage = '수정할 수상 내역이 존재하지 않습니다. 다시 한 번 확인해 주세요.'
             return { errorMessage }
         }
 
-        if(!title || !description){
+        if(!toUpdate.title || !toUpdate.description){
             throw new Error('수상 이력/상세 내용을 확인해주세요.')
         }
 
-        award = await Award.update({award_id, title, description})
+        award = await Award.update({award_id, toUpdate})
         return award
     }
 
-    static async getAwards({ user_id }){
+    static async getAwardsByUserId({ user_id }){
         const awards = await Award.findByUserId(user_id)
         if(!awards){
             const errorMessage = '수상 내역이 등록되지 않았습니다.'
             return {errorMessage}
         }
+        return awards
     }
 }
 

@@ -11,9 +11,9 @@ class Award {
         return award
     }
 
-    static async update({ award_id, title, description }){
+    static async update({ award_id, toUpdate }){
         const filter = { id: award_id }
-        const update = { title: title, description: description }
+        const update = { '$set': toUpdate }
         const option = { returnOriginal: false }
 
         const updatedAward = await AwardModel.findOneAndUpdate(
