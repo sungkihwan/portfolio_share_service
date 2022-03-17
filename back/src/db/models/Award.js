@@ -6,13 +6,17 @@ class Award {
         return createdNewAward
     }
 
-    static async findAwardById({ award_id }){
-        const award = await AwardModel.findOne({id: award_id})
+    static async findAwardById({ id }){
+        const award = await AwardModel.findOne({ id })
         return award
     }
 
-    static async update({ award_id, toUpdate }){
-        const filter = { id: award_id }
+    static async deleteAwardById(id){
+        return await AwardModel.deleteOne({ id })
+    }
+
+    static async update({ id, toUpdate }){
+        const filter = { id: id }
         const update = { '$set': toUpdate }
         const option = { returnOriginal: false }
 
@@ -26,7 +30,7 @@ class Award {
     }
 
     static async findByUserId({ user_id }){
-        const awards = await AwardModel.find({ user_id: user_id})
+        const awards = await AwardModel.find({ user_id })
         return awards
     }
 }

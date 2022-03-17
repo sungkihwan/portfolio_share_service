@@ -6,8 +6,7 @@ const EducationSchema = new Schema({
         required: true,
     },
     user_id : {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true,
     },
     school: {
@@ -22,6 +21,8 @@ const EducationSchema = new Schema({
         type: String,
         required: true,
     },
+},{
+    timestamps: true,
 })
 
 const EducationModel = model('Education', EducationSchema)

@@ -1,4 +1,5 @@
 import { EducationModel } from "../schemas/education";
+import {AwardModel} from "../schemas/award";
 
 class Education {
     static async create({ newInformation }){
@@ -6,13 +7,17 @@ class Education {
         return createdNewEducation
     }
 
-    static async findByPostId(post_id){
-        const posts = await EducationModel.findOne({ id: post_id})
+    static async findByPostId(id){
+        const posts = await EducationModel.findOne({ id })
         return posts
     }
 
-    static async updateByPostId({ post_id ,toUpdate }){
-        const filter = { id: post_id }
+    static async deleteEducationById(id){
+        return await EducationModel.deleteOne({ id })
+    }
+
+    static async updateByPostId({ id ,toUpdate }){
+        const filter = { id }
         const update = { '$set' : toUpdate }
         const option = { returnOriginal: false }
 
@@ -24,8 +29,8 @@ class Education {
         return updatePost
     }
 
-    static async findByUserId({ user_id }){
-        const posts = await EducationModel.find({ user_id: user_id})
+    static async findByUserId(user_id){
+        const posts = await EducationModel.find({ user_id })
         return posts
     }
 }
