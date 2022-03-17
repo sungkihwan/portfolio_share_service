@@ -14,7 +14,6 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
         e.preventDefault();
         e.stopPropagation();
 
-        const user_id = portfolioOwnerId;
         const when_date = whenDate;
 
         await Api.post("certificate/create", {
@@ -22,12 +21,20 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
             title,
             description,
             when_date,
-        });
+        })
+            .then(function (response) {
 
 
-        const res = await Api.get("certificatelist", user_id);
+            });
+
+
+        const user_id = portfolioOwnerId;
+
+        const res = await Api.get(`certificatelist/${user_id}`);
+
 
         setCertificates(res.data);
+
 
         setIsAdding(false);
     };
@@ -55,7 +62,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
             <Form.Group controlId="formBasicWhenDate" className="mt-3">
                 <DatePicker
                     selected={whenDate}
-                    onChange={(e) => setWhenDate(e.target.value)}
+                    onChange={(date) => setWhenDate(date)}
                 />
             </Form.Group>
 

@@ -6,24 +6,28 @@ import CertificateAddForm from "./CertificateAddForm";
 
 
 function Certificates({ portfolioOwnerId, isEditable }) {
+
     const [certificates, setCertificates] = useState([]);
     const [isAdding, setIsAdding] = useState(false);
+
 
     useEffect(() => {
         Api.get("certificatelist", portfolioOwnerId)
             .then((res) => setCertificates(res.data));
     }, [portfolioOwnerId]);
 
+
     return (
         <Card>
             <Card.Body>
-                <Card.Title>수상이력</Card.Title>
+                <Card.Title>자격증</Card.Title>
                 {certificates.map((certificate) => (
                     <Certificate
                         key={certificate.id}
                         certificate={certificate}
                         setCertificates={setCertificates}
                         isEditable={isEditable}
+
                     />
                 ))}
 

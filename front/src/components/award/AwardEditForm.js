@@ -36,7 +36,7 @@ function AwardEditForm({ currentAward, setIsEditing, setAwards }) {
                 <Form.Control
                     type='text'
                     placeholder='수상내역'
-                    value={title}
+                    value={title || ''}
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </Form.Group>
@@ -45,7 +45,7 @@ function AwardEditForm({ currentAward, setIsEditing, setAwards }) {
                 <Form.Control
                     type='text'
                     placeholder='상세내역'
-                    value={description}
+                    value={description || ''}
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </Form.Group>

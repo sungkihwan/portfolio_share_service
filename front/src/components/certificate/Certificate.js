@@ -8,8 +8,9 @@ function Certificate({ certificateId, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
     const [certificate, setCertificate] = useState(null);
 
+
     useEffect(() => {
-        Api.get("certificatelist", certificateId).then((res) => setCertificate(res.data));
+        Api.get(`certificatelist`, certificateId).then((res) => setCertificate(res.data));
     }, [certificateId]);
 
     return (

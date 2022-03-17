@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Api from "../../api";
 
-function CertificateEditForm({ currentCertificate, setIsEditing, setCertificates }) {
+function CertificateEditForm({ user, currentCertificate, setIsEditing, setCertificates }) {
     const [title, setTitle] = useState(currentCertificate?.title);
     const [description, setDescription] = useState(currentCertificate?.description);
     const [whenDate, setWhenDate] = useState(currentCertificate?.when_date);
@@ -15,20 +15,24 @@ function CertificateEditForm({ currentCertificate, setIsEditing, setCertificates
         e.stopPropagation();
 
 
-        const user_id = currentCertificate?.user_id;
+        const user_id = currentCertificate?.id;
         const when_date = currentCertificate?.when_date;
 
-        await Api.put(`certificates/${currentCertificate.id}`, {
-            user_id,
-            title,
-            description,
-            when_date
-        });
 
-        const res = await Api.get('certificatelist', user_id);
+        await Api
+            .put(`certificates/${user_id}`, {
+                user_id,
+                title,
+                description,
+                when_date
+            })
 
 
-        const updatedCertificate = res.data;
+        const id = currentCertificate?.id;
+
+        const res = await Api.get(`certificatelist/${id}`, id);
+
+        const updatedCertificate = res.user_id.data;
         setCertificates(updatedCertificate);
 
         setIsEditing(false);
@@ -41,7 +45,7 @@ function CertificateEditForm({ currentCertificate, setIsEditing, setCertificates
                 <Form.Control
                     type='text'
                     placeholder='자격증 제목'
-                    value={title}
+                    value={title || ''}
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </Form.Group>
@@ -50,15 +54,15 @@ function CertificateEditForm({ currentCertificate, setIsEditing, setCertificates
                 <Form.Control
                     type='text'
                     placeholder='상세내역'
-                    value={description}
+                    value={description || ''}
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </Form.Group>
 
             <Form.Group controlId='formWhenDate'>
                 <DatePicker
-                    selected={whenDate}
-                    onChange={(e) => setWhenDate(e.target.value)}
+                    selected={whenDate || ''}
+                    onChange={date => setWhenDate(date)}
                 />
             </Form.Group>
 
