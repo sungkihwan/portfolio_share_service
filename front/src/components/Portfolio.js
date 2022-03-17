@@ -6,6 +6,7 @@ import { UserStateContext } from '../App';
 import * as Api from '../api';
 import User from './user/User';
 import Educations from './education/Educations';
+import Projects from './project/Projects';
 function Portfolio() {
   const navigate = useNavigate();
   const params = useParams();
@@ -65,6 +66,15 @@ function Portfolio() {
             portfolioOwnerId={portfolioOwner.id}
             isEditable={portfolioOwner.id === userState.user?.id}
           />
+          <div className='mb-2'></div>
+          <div>수상이력</div>
+          <div className='mb-2'></div>
+          <Projects
+            portfolioOwnerId={portfolioOwner.id}
+            isEditable={portfolioOwner.id === userState.user?.id}
+          />
+          <div className='mb-2'></div>
+          <div>자격증</div>
         </Col>
       </Row>
     </Container>
