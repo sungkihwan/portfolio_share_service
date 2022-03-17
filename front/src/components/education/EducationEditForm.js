@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Col, Row } from 'react-bootstrap';
-import * as Api from 'api';
+import * as Api from '../../api';
 
 function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
   //useState로 school 상태를 생성함.
@@ -63,7 +63,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
             name='position'
             value='재학중'
             checked={position === '재학중'}
-            onChange={(e) => setPosition(e.taget.value)}
+            onChange={(e) => setPosition(e.target.value)}
           />
           <Form.Check
             inline
@@ -73,7 +73,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
             name='position'
             value='학사졸업'
             checked={position === '학사졸업'}
-            onChange={(e) => setPosition(e.taget.value)}
+            onChange={(e) => setPosition(e.target.value)}
           />
           <Form.Check
             inline
@@ -83,7 +83,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
             name='position'
             value='석사졸업'
             checked={position === '석사졸업'}
-            onChange={(e) => setPosition(e.taget.value)}
+            onChange={(e) => setPosition(e.target.value)}
           />
           <Form.Check
             inline
@@ -93,7 +93,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
             name='position'
             value='박사졸업'
             checked={position === '박사졸업'}
-            onChange={(e) => setPosition(e.taget.value)}
+            onChange={(e) => setPosition(e.target.value)}
           />
         </div>
       </Form.Group>
