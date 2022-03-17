@@ -7,7 +7,6 @@ const certificateRouter = Router();
 certificateRouter.use(login_required);
 
 certificateRouter.post("/certificate/create", async (req, res, next) => {
-  // validation 필요함
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(

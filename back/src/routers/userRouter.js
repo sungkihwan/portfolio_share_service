@@ -2,15 +2,26 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { body, validationResult } from 'express-validator';
 
 const userAuthRouter = Router();
 
-userAuthRouter.post("/user/register", async (req, res, next) => {
+userAuthRouter.post(
+  "/user/register",
+  body('email').isEmail(),
+  body('password').isLength({ min: 4 }),
+  async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
         "headers의 Content-Type을 application/json으로 설정해주세요"
       );
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors)
+      return res.status(400).json({ errors: errors.array() });
     }
 
     // req (request) 에서 데이터 가져오기
