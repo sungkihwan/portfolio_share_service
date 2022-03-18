@@ -6,7 +6,7 @@ import CertificateCard from "./CertificateCard";
 function Certificate({ certificate, setCertificates, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
     //const [certificate, setCertificate] = useState(null);
-    console.log(certificate);
+    /*   console.log('certificate', certificate); */
 
     return (
 
@@ -15,7 +15,7 @@ function Certificate({ certificate, setCertificates, isEditable }) {
                 <CertificateEditForm
                     certificate={certificate}
                     setIsEditing={setIsEditing}
-                    setCertificate={setCertificates}
+                    setCertificates={setCertificates}
                 />
             ) : (
                 <CertificateCard

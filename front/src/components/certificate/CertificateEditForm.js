@@ -1,49 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { Button, Card, Form, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Form, Col, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Api from "../../api";
 
-function CertificateEditForm({ certificate, setCertificate, setIsEditing, }) {
+
+function CertificateEditForm({ certificate, setCertificates, setIsEditing, }) {
+    console.log('Edit_setCertificates', setCertificates);
 
     /*  console.log('certificates', certificate); */
-    const { id, title, description, when_date, user_id } = certificate;
+    const [title, setTitle] = useState(certificate.title);
+    const [description, setDescription] = useState(certificate.description);
     const [whenDate, setWhenDate] = useState(new Date());
-    const convertedWhen_date = certificate.when_date;
 
-    useEffect(() => {
-        setCertificate({ ...certificate, when_date: convertedWhen_date });
-    }, [])
-
+    const dateToString = whenDate.toISOString().substring(0, 10);
 
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
         e.stopPropagation();
 
-        try {
-            await Api
-                .put(`certificates/${id}`, {
-                    user_id,
-                    title,
-                    description,
-                    when_date
-                })
+        const user_id = certificate.user_id;
 
-            const res = await Api.get(`certificatelist/${user_id}`, {
-                title: certificate.title,
-                description: certificate.description,
-                when_date: certificate.when_date
-            });
+        await Api.put(`certificates/${certificate.id}`, {
+            user_id,
+            title,
+            description,
+            when_date: dateToString,
+        });
 
-            const updatedCertificate = res.data;
-            setCertificate(updatedCertificate);
-            setIsEditing(false);
+        const res = await Api.get('certificatelist', user_id);
 
-        } catch (error) {
-            console.log(error);
-        }
+        setCertificates(res.data);
+        setIsEditing(false);
+
     };
 
     return (
@@ -54,7 +44,7 @@ function CertificateEditForm({ certificate, setCertificate, setIsEditing, }) {
                     placeholder='자격증 제목'
 
                     value={title || ''}
-                    onChange={(e) => setCertificate({ ...certificate, title: e.target.value })}
+                    onChange={(e) => setTitle(e.target.value)}
 
                 />
             </Form.Group>
@@ -65,7 +55,7 @@ function CertificateEditForm({ certificate, setCertificate, setIsEditing, }) {
                     placeholder='상세내역'
 
                     value={description || ''}
-                    onChange={(e) => setCertificate({ ...certificate, description: e.target.value })}
+                    onChange={(e) => setDescription(e.target.value)}
 
                 />
             </Form.Group>

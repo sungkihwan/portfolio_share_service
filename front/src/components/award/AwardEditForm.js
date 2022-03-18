@@ -4,23 +4,27 @@ import * as Api from "../../api";
 
 
 function AwardEditForm({ award, setIsEditing, setAwards }) {
+    console.log('setAwards', setAwards);
     const [title, setTitle] = useState(award.title);
     const [description, setDescription] = useState(award.description);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
-        const res = await Api.put(`awards/${award.id}`, {
-            title: award.title,
-            description: award.description
+        const user_id = award.user_id;
+
+        await Api.put(`awards/${award.id}`, {
+            user_id,
+            title,
+            description,
         });
 
+        const res = await Api.get('awardlist', user_id);
 
-        const updatedAward = { ...award, title: res.data.title, description: res.data.description };
-        setAwards(updatedAward);
-
+        setAwards(res.data);
         setIsEditing(false);
+
     };
 
     return (

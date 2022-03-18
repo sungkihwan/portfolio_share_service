@@ -4,7 +4,7 @@ import AwardCard from "./AwardCard";
 import * as Api from "../../api";
 
 
-function Award({ award, setAward, isEditable }) {
+function Award({ award, setAwards, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
 
     return (
@@ -13,7 +13,7 @@ function Award({ award, setAward, isEditable }) {
                 <AwardEditForm
                     award={award}
                     setIsEditing={setIsEditing}
-                    setAward={setAward}
+                    setAwards={setAwards}
                 />
             ) : (
                 <AwardCard

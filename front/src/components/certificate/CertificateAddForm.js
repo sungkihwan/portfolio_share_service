@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Api from "../../api";
 
-function CertificateAddForm({ certificates, setCertificates, portfolioOwnerId, setIsAdding }) {
+function CertificateAddForm({ setCertificates, portfolioOwnerId, setIsAdding }) {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -13,24 +13,26 @@ function CertificateAddForm({ certificates, setCertificates, portfolioOwnerId, s
 
     const dateToString = whenDate.toISOString().substring(0, 10);
 
-    console.log(dateToString);
-
+    /*    console.log(dateToString); */
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        await Api.post("certificate/create", {
+        const user_id = portfolioOwnerId;
+
+        await Api.post('certificate/create', {
             user_id: portfolioOwnerId,
             title,
             description,
             when_date: dateToString,
-        }).then((res) => {
-            setCertificates([...certificates, res.data]);
-            setIsAdding(false);
-
         });
+
+        const res = await Api.get('certificatelist', user_id);
+        setCertificates(res.data);
+        setIsAdding(false);
     };
+
 
     return (
         <Form onSubmit={handleSubmit}>
