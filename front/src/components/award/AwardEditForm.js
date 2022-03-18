@@ -3,28 +3,21 @@ import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../api";
 
 
-function AwardEditForm({ currentAward, setIsEditing, setAwards }) {
-    const [title, setTitle] = useState(currentAward.title);
-    const [description, setDescription] = useState(currentAward.description);
+function AwardEditForm({ award, setIsEditing, setAwards }) {
+    const [title, setTitle] = useState(award.title);
+    const [description, setDescription] = useState(award.description);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation();
 
-
-        const user_id = currentAward.user_id;
-
-        await Api.put(`awards/${currentAward.id}`, {
-            user_id,
-            title,
-            description
+        const res = await Api.put(`awards/${award.id}`, {
+            title: award.title,
+            description: award.description
         });
 
-        const res = await Api.get('awardlist', user_id);
 
-
-        const updatedAward = res.data;
+        const updatedAward = { ...award, title: res.data.title, description: res.data.description };
         setAwards(updatedAward);
 
         setIsEditing(false);
