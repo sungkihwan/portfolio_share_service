@@ -19,10 +19,10 @@ function Awards({ portfolioOwnerId, isEditable }) {
 
 
     return (
-        <Card>
+        <Card className="mt-2">
             <Card.Body>
                 <Card.Title>수상이력</Card.Title>
-                {awards.map((award) => (
+                <Card.Text>{awards.map((award) => (
                     <Award
                         key={award.id}
                         award={award}
@@ -31,7 +31,7 @@ function Awards({ portfolioOwnerId, isEditable }) {
 
                     />
                 ))}
-
+                </Card.Text>
                 {isEditable && (
                     <Row className="mt-3 text-center mb-4">
                         <Col sm={{ span: 20 }}>
