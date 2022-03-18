@@ -17,7 +17,7 @@ function EducationEditForm({ currentEducation, setEducations, setIsEditing }) {
     // currentEducation의 user_id를 user_id 변수에 할당함.
     const user_id = currentEducation.user_id;
 
-    // "awards/수상 id" 엔드포인트로 PUT 요청함.
+    // "educations/학력 id" 엔드포인트로 PUT 요청함.
     await Api.put(`educations/${currentEducation.id}`, {
       user_id,
       school,
