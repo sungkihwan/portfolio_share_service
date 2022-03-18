@@ -25,22 +25,6 @@ function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding }) {
     };
 
 
-
-    /*  const handleSubmit = async (e) => {
-         e.preventDefault();
-         e.stopPropagation();
- 
-         await Api.post("award/create", {
-             user_id: portfolioOwnerId,
-             title,
-             description,
-         }).then(function (response) {
-             setAwards([...awards, response.data]);
-             setIsAdding(false);
- 
-         });
-     };
-  */
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicTitle">
