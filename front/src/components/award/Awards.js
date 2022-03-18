@@ -5,13 +5,18 @@ import Award from "./Award";
 import AwardAddForm from "./AwardAddForm";
 
 function Awards({ portfolioOwnerId, isEditable }) {
+
     const [awards, setAwards] = useState([]);
     const [isAdding, setIsAdding] = useState(false);
+
 
     useEffect(() => {
         Api.get("awardlist", portfolioOwnerId)
             .then((res) => setAwards(res.data));
     }, [portfolioOwnerId]);
+
+
+
 
     return (
         <Card>
@@ -23,12 +28,13 @@ function Awards({ portfolioOwnerId, isEditable }) {
                         award={award}
                         setAwards={setAwards}
                         isEditable={isEditable}
+
                     />
                 ))}
 
                 {isEditable && (
-                    <Row>
-                        <Col>
+                    <Row className="mt-3 text-center mb-4">
+                        <Col sm={{ span: 20 }}>
                             <Button onClick={() => setIsAdding(true)}>+</Button>
                         </Col>
                     </Row>

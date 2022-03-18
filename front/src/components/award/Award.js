@@ -4,13 +4,8 @@ import AwardCard from "./AwardCard";
 import * as Api from "../../api";
 
 
-function Award({ awardId, isEditable }) {
+function Award({ award, setAward, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [award, setAward] = useState(null);
-
-    useEffect(() => {
-        Api.get("awardlist", awardId).then((res) => setAward(res.data));
-    }, [awardId]);
 
     return (
         <>

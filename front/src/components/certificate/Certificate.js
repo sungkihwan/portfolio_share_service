@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CertificateEditForm from "./CertificateEditForm";
 import CertificateCard from "./CertificateCard";
-import * as Api from "../../api";
 
 
-function Certificate({ certificateId, isEditable }) {
+function Certificate({ certificate, setCertificates, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [certificate, setCertificate] = useState(null);
+    //const [certificate, setCertificate] = useState(null);
 
-
-    useEffect(() => {
-        Api.get(`certificatelist`, certificateId).then((res) => setCertificate(res.data));
-    }, [certificateId]);
 
     return (
 
@@ -20,7 +15,7 @@ function Certificate({ certificateId, isEditable }) {
                 <CertificateEditForm
                     certificate={certificate}
                     setIsEditing={setIsEditing}
-                    setCertificate={setCertificate}
+                    setCertificate={setCertificates}
                 />
             ) : (
                 <CertificateCard
@@ -33,6 +28,5 @@ function Certificate({ certificateId, isEditable }) {
     )
 
 }
-
 
 export default Certificate;

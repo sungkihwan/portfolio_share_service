@@ -16,38 +16,40 @@ function Certificates({ portfolioOwnerId, isEditable }) {
             .then((res) => setCertificates(res.data));
     }, [portfolioOwnerId]);
 
-
+    console.log('certificates', certificates);
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>자격증</Card.Title>
-                {certificates.map((certificate) => (
-                    <Certificate
-                        key={certificate.id}
-                        certificate={certificate}
-                        setCertificates={setCertificates}
-                        isEditable={isEditable}
+        <>
+            <Card>
+                <Card.Body>
+                    <Card.Title>자격증</Card.Title>
+                    {certificates.map((certificate) => (
+                        <Certificate
+                            key={certificate.id}
+                            certificate={certificate}
+                            setCertificates={setCertificates}
+                            isEditable={isEditable}
 
-                    />
-                ))}
+                        />
+                    ))}
 
-                {isEditable && (
-                    <Row className="mt-3 text-center mb-4">
-                        <Col sm={{ span: 20 }}>
-                            <Button onClick={() => setIsAdding(true)}>+</Button>
-                        </Col>
-                    </Row>
-                )}
+                    {isEditable && (
+                        <Row className="mt-3 text-center mb-4">
+                            <Col sm={{ span: 20 }}>
+                                <Button onClick={() => setIsAdding(true)}>+</Button>
+                            </Col>
+                        </Row>
+                    )}
 
-                {isAdding && (
-                    <CertificateAddForm
-                        portfolioOwnerId={portfolioOwnerId}
-                        setAwards={setCertificates}
-                        setIsAdding={setIsAdding}
-                    />
-                )}
-            </Card.Body>
-        </Card>
+                    {isAdding && (
+                        <CertificateAddForm
+                            portfolioOwnerId={portfolioOwnerId}
+                            setCertificates={setCertificates}
+                            setIsAdding={setIsAdding}
+                        />
+                    )}
+                </Card.Body>
+            </Card>
+        </>
     )
 
 }

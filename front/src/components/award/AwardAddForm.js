@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import * as Api from "../../api";
 
-function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding }) {
+function AwardAddForm({ portfolioOwnerId, awards, setAwards, setIsAdding }) {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -11,20 +11,15 @@ function AwardAddForm({ portfolioOwnerId, setAwards, setIsAdding }) {
         e.preventDefault();
         e.stopPropagation();
 
-        const user_id = portfolioOwnerId;
-
         await Api.post("award/create", {
             user_id: portfolioOwnerId,
             title,
             description,
+        }).then(function (response) {
+            setAwards(response.data);
+            setIsAdding(false);
+
         });
-
-
-        const res = await Api.get("awardlist", user_id);
-
-        setAwards(res.data);
-
-        setIsAdding(false);
     };
 
     return (

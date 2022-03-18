@@ -4,39 +4,32 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Api from "../../api";
 
-function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) {
+function CertificateAddForm({ certificates, setCertificates, portfolioOwnerId, setIsAdding }) {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [whenDate, setWhenDate] = useState(new Date());
 
+
+    const dateToString = whenDate.toISOString().substring(0, 10);
+
+    /* console.log(dateToString); */
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const when_date = whenDate;
 
         await Api.post("certificate/create", {
             user_id: portfolioOwnerId,
             title,
             description,
-            when_date,
-        })
-            .then(function (response) {
+            when_date: dateToString,
+        }).then((res) => {
+            setCertificates([...certificates, res.data]);
+            setIsAdding(false);
 
-
-            });
-
-
-        const user_id = portfolioOwnerId;
-
-        const res = await Api.get(`certificatelist/${user_id}`);
-
-
-        setCertificates(res.data);
-
-
-        setIsAdding(false);
+        });
     };
 
     return (
@@ -61,7 +54,7 @@ function CertificateAddForm({ portfolioOwnerId, setCertificates, setIsAdding }) 
 
             <Form.Group controlId="formBasicWhenDate" className="mt-3">
                 <DatePicker
-                    selected={whenDate}
+                    selected={whenDate} dateFormat='yyyy/MM/dd'
                     onChange={(date) => setWhenDate(date)}
                 />
             </Form.Group>

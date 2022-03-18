@@ -1,42 +1,49 @@
-import React, { useState } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Button, Card, Form, Col, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Api from "../../api";
 
-function CertificateEditForm({ user, currentCertificate, setIsEditing, setCertificates }) {
-    const [title, setTitle] = useState(currentCertificate?.title);
-    const [description, setDescription] = useState(currentCertificate?.description);
-    const [whenDate, setWhenDate] = useState(currentCertificate?.when_date);
+function CertificateEditForm({ certificate, setCertificate, setIsEditing, }) {
+
+    /*  console.log('certificates', certificate); */
+    const { id, title, description, when_date, user_id } = certificate;
+    const [whenDate, setWhenDate] = useState(new Date());
+    const convertedWhen_date = certificate.when_date;
+
+    useEffect(() => {
+        setCertificate({ ...certificate, when_date: convertedWhen_date });
+    }, [])
+
 
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         e.stopPropagation();
 
+        try {
+            await Api
+                .put(`certificates/${id}`, {
+                    user_id,
+                    title,
+                    description,
+                    when_date
+                })
 
-        const user_id = currentCertificate?.id;
-        const when_date = currentCertificate?.when_date;
+            const res = await Api.get(`certificatelist/${user_id}`, {
+                title: certificate.title,
+                description: certificate.description,
+                when_date: certificate.when_date
+            });
 
+            const updatedCertificate = res.data;
+            setCertificate(updatedCertificate);
+            setIsEditing(false);
 
-        await Api
-            .put(`certificates/${user_id}`, {
-                user_id,
-                title,
-                description,
-                when_date
-            })
-
-
-        const id = currentCertificate?.id;
-
-        const res = await Api.get(`certificatelist/${id}`, id);
-
-        const updatedCertificate = res.user_id.data;
-        setCertificates(updatedCertificate);
-
-        setIsEditing(false);
-
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -45,8 +52,10 @@ function CertificateEditForm({ user, currentCertificate, setIsEditing, setCertif
                 <Form.Control
                     type='text'
                     placeholder='자격증 제목'
+
                     value={title || ''}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => setCertificate({ ...certificate, title: e.target.value })}
+
                 />
             </Form.Group>
 
@@ -54,15 +63,19 @@ function CertificateEditForm({ user, currentCertificate, setIsEditing, setCertif
                 <Form.Control
                     type='text'
                     placeholder='상세내역'
+
                     value={description || ''}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => setCertificate({ ...certificate, description: e.target.value })}
+
                 />
             </Form.Group>
 
             <Form.Group controlId='formWhenDate'>
                 <DatePicker
-                    selected={whenDate || ''}
+
+                    selected={whenDate || ''} dateFormat='yyyy/MM/dd'
                     onChange={date => setWhenDate(date)}
+
                 />
             </Form.Group>
 
