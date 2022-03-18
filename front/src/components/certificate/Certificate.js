@@ -6,7 +6,7 @@ import CertificateCard from "./CertificateCard";
 function Certificate({ certificate, setCertificates, isEditable }) {
     const [isEditing, setIsEditing] = useState(false);
     //const [certificate, setCertificate] = useState(null);
-
+    console.log(certificate);
 
     return (
 

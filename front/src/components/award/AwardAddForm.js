@@ -16,7 +16,7 @@ function AwardAddForm({ portfolioOwnerId, awards, setAwards, setIsAdding }) {
             title,
             description,
         }).then(function (response) {
-            setAwards(response.data);
+            setAwards([...awards, response.data]);
             setIsAdding(false);
 
         });

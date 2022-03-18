@@ -13,7 +13,7 @@ function CertificateAddForm({ certificates, setCertificates, portfolioOwnerId, s
 
     const dateToString = whenDate.toISOString().substring(0, 10);
 
-    /* console.log(dateToString); */
+    console.log(dateToString);
 
 
     const handleSubmit = async (e) => {

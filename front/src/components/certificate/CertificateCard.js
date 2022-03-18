@@ -3,6 +3,8 @@ import { Card, Row, Button, Col } from "react-bootstrap";
 
 function CertificateCard({ certificate, setIsEditing, isEditable }) {
 
+    console.log(certificate);
+
     return (
         <div className="card w-100">
             <div className="card-body">
