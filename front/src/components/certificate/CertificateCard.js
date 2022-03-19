@@ -2,7 +2,7 @@ import { Card, Row, Button, Col } from 'react-bootstrap';
 
 function CertificateCard({ certificate, setIsEditing, isEditable }) {
   return (
-    <Card.Body>
+    <Card.Text>
       <Row className='align-items-center'>
         <Col>
           <span>{certificate?.title}</span>
@@ -24,7 +24,7 @@ function CertificateCard({ certificate, setIsEditing, isEditable }) {
           </Col>
         )}
       </Row>
-    </Card.Body>
+    </Card.Text>
   );
 }
 

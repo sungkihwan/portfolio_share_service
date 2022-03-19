@@ -13,7 +13,7 @@ function Awards({ portfolioOwnerId, isEditable }) {
   }, [portfolioOwnerId]);
 
   return (
-    <Card className='mt-2'>
+    <Card>
       <Card.Body>
         <Card.Title>수상이력</Card.Title>
         <Card.Text>

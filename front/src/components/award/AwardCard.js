@@ -2,7 +2,7 @@ import { Card, Row, Button, Col } from 'react-bootstrap';
 
 function AwardCard({ award, setIsEditing, isEditable }) {
   return (
-    <Card.Body>
+    <Card.Text>
       <Row className='align-items-center'>
         <Col>
           <span>{award?.title}</span>
@@ -22,7 +22,7 @@ function AwardCard({ award, setIsEditing, isEditable }) {
           </Col>
         )}
       </Row>
-    </Card.Body>
+    </Card.Text>
   );
 }
 

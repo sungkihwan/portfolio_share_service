@@ -44,7 +44,7 @@ function CertificateEditForm({ certificate, setCertificates, setIsEditing }) {
         />
       </Form.Group>
 
-      <Form.Group controlId='formDescription'>
+      <Form.Group controlId='formDescription' className='mt-3'>
         <Form.Control
           type='text'
           placeholder='상세내역'
@@ -53,7 +53,7 @@ function CertificateEditForm({ certificate, setCertificates, setIsEditing }) {
         />
       </Form.Group>
 
-      <Form.Group controlId='formWhenDate'>
+      <Form.Group controlId='formWhenDate' className='mt-3'>
         <DatePicker
           selected={whenDate || ''}
           dateFormat='yyyy/MM/dd'
@@ -61,7 +61,7 @@ function CertificateEditForm({ certificate, setCertificates, setIsEditing }) {
         />
       </Form.Group>
 
-      <Form.Group as={Row}>
+      <Form.Group as={Row} className='mt-3 text-center mb-4'>
         <Col>
           <Button variant='primary' type='submit'>
             확인
