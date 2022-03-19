@@ -14,13 +14,15 @@ const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
     e.stopPropagation();
 
     const user_id = portfolioOwnerId;
+    const from_dateToString = from_date.toISOString().substring(0, 10);
+    const to_dateToString = to_date.toISOString().substring(0, 10);
 
     await Api.post('project/create', {
       user_id: portfolioOwnerId,
       title,
       description,
-      from_date,
-      to_date,
+      from_date: from_dateToString,
+      to_date: to_dateToString,
     });
 
     const res = await Api.get('projectlist', user_id);
@@ -51,13 +53,13 @@ const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
         <div className='col-auto'>
           <DatePicker
             selected={from_date}
-            onChange={(date) => setFrom_date(date.toISOString().slice(0, 10))}
+            onChange={(date) => setFrom_date(date)}
           />
         </div>
         <div className='col-auto'>
           <DatePicker
             selected={to_date}
-            onChange={(date) => setTo_date(date.toISOString().slice(0, 10))}
+            onChange={(date) => setTo_date(date)}
           />
         </div>
       </Form.Group>

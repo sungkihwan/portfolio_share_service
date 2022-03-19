@@ -19,14 +19,15 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
 
     // currentProject의 user_id를 user_id 변수에 할당함.
     const user_id = currentProject.user_id;
-
+    const from_dateToString = from_date.toISOString().substring(0, 10);
+    const to_dateToString = to_date.toISOString().substring(0, 10);
     // "projects/수상 id" 엔드포인트로 PUT 요청함.
     await Api.put(`projects/${currentProject.id}`, {
       user_id,
       title,
       description,
-      from_date,
-      to_date,
+      from_date: from_dateToString,
+      to_date: to_dateToString,
     });
 
     // "projectlist/유저id" 엔드포인트로 GET 요청함.
@@ -61,13 +62,13 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
         <div className='col-auto'>
           <DatePicker
             selected={from_date}
-            onChange={(date) => setFrom_date(date.toISOString().slice(0, 10))}
+            onChange={(date) => setFrom_date(date)}
           />
         </div>
         <div className='col-auto'>
           <DatePicker
             selected={to_date}
-            onChange={(date) => setTo_date(date.toISOString().slice(0, 10))}
+            onChange={(date) => setTo_date(date)}
           />
         </div>
       </Form.Group>
