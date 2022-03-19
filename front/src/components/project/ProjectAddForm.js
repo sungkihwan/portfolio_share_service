@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Button, Form, Col, Row } from 'react-bootstrap';
 import * as Api from '../../api';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 
 const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [from_date, setFrom_date] = useState(new Date());
   const [to_date, setTo_date] = useState(new Date());
-  // moment().format('YYYY-MM-DD')
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -52,13 +51,13 @@ const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
         <div className='col-auto'>
           <DatePicker
             selected={from_date}
-            onChange={(date) => setFrom_date(moment(date).format('yyyy-MM-DD'))}
+            onChange={(date) => setFrom_date(date.toISOString().slice(0, 10))}
           />
         </div>
         <div className='col-auto'>
           <DatePicker
-            selected={from_date}
-            onChange={(date) => setTo_date(moment(date).format('yyyy-MM-DD'))}
+            selected={to_date}
+            onChange={(date) => setTo_date(date.toISOString().slice(0, 10))}
           />
         </div>
       </Form.Group>

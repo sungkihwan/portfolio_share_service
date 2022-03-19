@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Form, Col, Row } from 'react-bootstrap';
 import * as Api from '../../api';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 
 function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
   //useState로 title 상태를 생성함.
@@ -62,13 +61,13 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
         <div className='col-auto'>
           <DatePicker
             selected={from_date}
-            onChange={(date) => setFrom_date(moment(date).format('yyyy-MM-DD'))}
+            onChange={(date) => setFrom_date(date.toISOString().slice(0, 10))}
           />
         </div>
         <div className='col-auto'>
           <DatePicker
-            selected={from_date}
-            onChange={(date) => setTo_date(moment(date).format('yyyy-MM-DD'))}
+            selected={to_date}
+            onChange={(date) => setTo_date(date.toISOString().slice(0, 10))}
           />
         </div>
       </Form.Group>
