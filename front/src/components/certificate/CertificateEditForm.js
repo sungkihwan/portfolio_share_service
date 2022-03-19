@@ -1,89 +1,78 @@
-import React, { useState } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import * as Api from "../../api";
+import React, { useState } from 'react';
+import { Button, Form, Col, Row } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import * as Api from '../../api';
 
+function CertificateEditForm({ certificate, setCertificates, setIsEditing }) {
+  console.log('Edit_setCertificates', setCertificates);
 
-function CertificateEditForm({ certificate, setCertificates, setIsEditing, }) {
-    console.log('Edit_setCertificates', setCertificates);
+  /*  console.log('certificates', certificate); */
+  const [title, setTitle] = useState(certificate.title);
+  const [description, setDescription] = useState(certificate.description);
+  const [whenDate, setWhenDate] = useState(new Date());
 
-    /*  console.log('certificates', certificate); */
-    const [title, setTitle] = useState(certificate.title);
-    const [description, setDescription] = useState(certificate.description);
-    const [whenDate, setWhenDate] = useState(new Date());
+  const dateToString = whenDate.toISOString().substring(0, 10);
 
-    const dateToString = whenDate.toISOString().substring(0, 10);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
+    const user_id = certificate.user_id;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    await Api.put(`certificates/${certificate.id}`, {
+      user_id,
+      title,
+      description,
+      when_date: dateToString,
+    });
 
-        const user_id = certificate.user_id;
+    const res = await Api.get('certificatelist', user_id);
 
-        await Api.put(`certificates/${certificate.id}`, {
-            user_id,
-            title,
-            description,
-            when_date: dateToString,
-        });
+    setCertificates(res.data);
+    setIsEditing(false);
+  };
 
-        const res = await Api.get('certificatelist', user_id);
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId='formTitle'>
+        <Form.Control
+          type='text'
+          placeholder='자격증 제목'
+          value={title || ''}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </Form.Group>
 
-        setCertificates(res.data);
-        setIsEditing(false);
+      <Form.Group controlId='formDescription'>
+        <Form.Control
+          type='text'
+          placeholder='상세내역'
+          value={description || ''}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Form.Group>
 
-    };
+      <Form.Group controlId='formWhenDate'>
+        <DatePicker
+          selected={whenDate || ''}
+          dateFormat='yyyy/MM/dd'
+          onChange={(date) => setWhenDate(date)}
+        />
+      </Form.Group>
 
-    return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId='formTitle'>
-                <Form.Control
-                    type='text'
-                    placeholder='자격증 제목'
-
-                    value={title || ''}
-                    onChange={(e) => setTitle(e.target.value)}
-
-                />
-            </Form.Group>
-
-            <Form.Group controlId='formDescription'>
-                <Form.Control
-                    type='text'
-                    placeholder='상세내역'
-
-                    value={description || ''}
-                    onChange={(e) => setDescription(e.target.value)}
-
-                />
-            </Form.Group>
-
-            <Form.Group controlId='formWhenDate'>
-                <DatePicker
-
-                    selected={whenDate || ''} dateFormat='yyyy/MM/dd'
-                    onChange={date => setWhenDate(date)}
-
-                />
-            </Form.Group>
-
-
-            <Form.Group as={Row}>
-                <Col>
-                    <Button variant='primary' type='submit'>
-                        확인
-                    </Button>
-                    <Button variant='secondary' onClick={(e) => setIsEditing(false)}>
-                        취소
-                    </Button>
-                </Col>
-            </Form.Group>
-        </Form >
-    )
-
+      <Form.Group as={Row}>
+        <Col>
+          <Button variant='primary' type='submit'>
+            확인
+          </Button>
+          <Button variant='secondary' onClick={(e) => setIsEditing(false)}>
+            취소
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
+  );
 }
-
 
 export default CertificateEditForm;

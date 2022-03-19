@@ -9,9 +9,11 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(currentProject.description);
   //useState로 from_date 상태를 생성함
-  const [from_date, setFrom_date] = useState(currentProject.from_date);
+  const [from_date, setFrom_date] = useState(
+    new Date(currentProject.from_date)
+  );
   //useState로 to_date 상태를 생성함
-  const [to_date, setTo_date] = useState(currentProject.to_date);
+  const [to_date, setTo_date] = useState(new Date(currentProject.to_date));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
