@@ -1,25 +1,79 @@
 import { Router } from 'express'
 import { login_required } from "../middlewares/login_required";
-import { storage, dir_init } from "../middlewares/fileUpload";
+import { storage, dir_init, fileHandler  } from "../middlewares/fileUpload";
 import is from "@sindresorhus/is";
+import { profileService } from "../services/profileService";
 import multer from "multer";
-
-
-const upload = multer({ storage : storage})
 
 const profileRouter = Router()
 profileRouter.use(login_required)
 
 profileRouter.post('/profile/create',
     dir_init,
-    upload.single('uploadImage'),
-    async (req, res, next)=>{
+    (req, res, next)=>{
+    fileHandler(req, res, next, async (err)  => {
+        try{
+            if(!req.file){
+                throw new Error('파일이 전송되지 않았습니다.')
+            }
+
+            console.log('req.file>>>', req.file)
+            const { destination, filename } = req.file
+            const { user_id } = req.body
+
+            const newProfile = await profileService.addProfile({user_id, path_name: destination, file_name: filename})
+
+            if(newProfile.errorMessage){
+                throw new Error(newProfile.errorMessage)
+            }
+            res.status(200).json(newProfile)
+        }catch (e) {
+            next(e)
+        }
+
+    })
+})
+
+profileRouter.get('/profile/:user_id', async(req, res, next) => {
     try{
-        console.log('file Uploaded', req.file)
-        res.send('upload완료')
+        const { user_id } = req.params
+        const profile = await profileService.getProfile({user_id})
+        console.log(profile)
+        if(profile.errorMessage){
+            throw new Error(profile.errorMessage)
+        }
+
+        const response = {success: 'ok', path: profile.path_name + profile.file_name}
+        res.status(200).json(response)
     }catch (e) {
         next(e)
     }
+})
+
+profileRouter.put('/profile/:user_id',
+    (req, res, next) => {
+        fileHandler(req, res, next, async (err)  => {
+            try{
+                if(!req.file){
+                    throw new Error('파일이 전송되지 않았습니다.')
+                }
+
+                console.log('req.file>>>', req.file)
+                const { destination, filename } = req.file
+                const { user_id } = req.params
+
+                const updatedProfile = await profileService.setProfile({user_id, path_name: destination, file_name: filename})
+
+                if(updatedProfile.errorMessage){
+                    throw new Error(updatedProfile.errorMessage)
+                }
+                res.status(200).json(updatedProfile)
+            }catch (e) {
+                next(e)
+            }
+
+        })
+
 })
 
 export { profileRouter }

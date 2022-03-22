@@ -4,8 +4,9 @@ import path from 'path'
 
 const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            const path = __dirname.substring(0, __dirname.indexOf('back'))
-            cb(null, path.join(path,'uploads/'))
+            const newPath = path.join(path.parse(__dirname).dir, 'uploads/')
+            console.log(newPath)
+            cb(null, newPath)
         },
         filename: (req, file, cb) => {
             const ext = path.extname(file.originalname)
@@ -16,17 +17,31 @@ const storage = multer.diskStorage({
 
 })
 
+const fileFilter =  (req, file, cb) => {
+    let ext = path.extname(file.originalname);
+    if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+        return cb(new Error(
+            '이미지 파일만 보내실 수 있습니다. e.g).png, .jpg, .jpeg'
+        ))
+    }
+    cb(null, true)
+}
 
+const upload = multer({
+    storage : storage,
+    fileFilter: fileFilter,
+    limits:{
+        fileSize: 1024 * 1024 * 20
+    }
+})
+
+const fileHandler = upload.single('uploadImage')
 
 const dir_init = (req, res, next) => {
-    console.log('dir',__dirname)
-    const test = __dirname
-    const test2 = test.substring(0, test.indexOf('back'))
-    console.log(test2)
-
-    fs.readdir(test2+'uploads', (err)=> {
+    const newPath = path.join(path.parse(__dirname).dir, 'uploads')
+    fs.readdir(newPath, (err)=> {
         if(err){
-            fs.mkdirSync(test2 + 'uploads')
+            fs.mkdirSync(newPath)
             console.log('if문 안쪽')
             next()
         }
@@ -34,4 +49,6 @@ const dir_init = (req, res, next) => {
     })
 }
 
-export { dir_init, storage }
+
+
+export { dir_init, storage, fileFilter, fileHandler }

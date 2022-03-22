@@ -23,6 +23,6 @@ const ImageSchema = new Schema({
     }
 )
 
-const ImageModel = model('Image', ImageSchema)
+const ProfileModel = model('Profile', ImageSchema)
 
-export { ImageModel }
+export { ProfileModel }

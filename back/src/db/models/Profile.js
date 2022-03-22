@@ -1,24 +1,38 @@
-import { ImageModel } from "../schemas/profile";
-import {AwardModel} from "../schemas/award";
+import { ProfileModel } from "../schemas/profile";
+
 
 class Profile {
 
-    static async create({ newImage }){
-        const createNewImage = await ImageModel.create(newImage)
+    static async create({ newProfile }){
+        const createNewImage = await ProfileModel.create(newProfile)
         return createNewImage
     }
 
-    static async findImageByUserId({user_id}){
-        const image = await ImageModel.find({ user_id })
+    static async findProfileById({id}){
+        const profile = await ProfileModel.findOne({ id })
+        return profile
+    }
+
+    static async findProfileByUserId({user_id}){
+        const image = await ProfileModel.find({ user_id })
         return image
     }
 
-    static async deleteImage(id){
-        return await ImageModel.deleteOne({id});
+    static async deleteProfile(id){
+        return await ProfileModel.deleteOne({id});
     }
 
-    static async updateImage({ id, toUpdate }){
-        //
+    static async updateProfile({ id, toUpdate }){
+        const filter = { id }
+        const update = { '$set' : toUpdate }
+        const option = { returnOriginal: false }
+
+        const updatedProfile = await ProfileModel.findOneAndUpdate(
+            filter,
+            update,
+            option
+        )
+        return updatedProfile
     }
 
 
