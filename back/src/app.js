@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { Server } from 'socket.io';
 import { userAuthRouter } from "./routers/userRouter";
 import { certificateRouter } from "./routers/certificateRouter";
 import { projectRouter } from "./routers/projectRouter";

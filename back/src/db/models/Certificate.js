@@ -17,7 +17,7 @@ class Certificate {
     return await CertificateModel.find({ user_id });
   }
 
-  static async update({ id, toUpdate }) {
+  static async updateById({ id, toUpdate }) {
     const filter = { id };
     const update = { "$set": toUpdate }
     const option = { returnOriginal: false };

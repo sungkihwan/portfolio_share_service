@@ -27,7 +27,7 @@ class certificateService {
     return await Certificate.findAllByUserId(user_id);
   }
 
-  static async update(id, toUpdate) {
+  static async updateById(id, toUpdate) {
     const certificate = await Certificate.findById(id);
 
     if (!certificate) {
@@ -39,7 +39,7 @@ class certificateService {
     if (!toUpdate.description) delete toUpdate.description
     if (!toUpdate.when_date) delete toUpdate.when_date
     
-    return await Certificate.update({ id, toUpdate });
+    return await Certificate.updateById({ id, toUpdate });
   }
 }
 
