@@ -30,20 +30,24 @@ class profileService {
 
     }
 
-    static async setProfile({id, toUpdate}){
-        let profile = await Profile.findProfileById({id})
+    static async setProfile({user_id, toUpdate}){
+        let [profile] = await Profile.findProfileByUserId({user_id})
         if(!profile){
             const errorMessage = '수정할 프로필 내역이 존재하지 않습니다. 다시 한 번 확인해 주세요.'
             return { errorMessage }
         }
 
-        if(!toUpdate.file_name || !toUpdate.path_name || !toUpdate.user_id){
+        if( !toUpdate.file_name || !toUpdate.path_name ){
             const errorMessage = '프로필 상세 내용을 확인해 주세요.'
             return { errorMessage }
         }
 
-        profile = await Profile.updateProfile({id, toUpdate})
+        profile = await Profile.updateProfile({ user_id, toUpdate})
         return profile
+    }
+
+    static async deleteProfile({user_id}){
+        return await Profile.deleteProfile(user_id)
     }
 }
 

@@ -45,10 +45,11 @@ const dir_init = (req, res, next) => {
             console.log('if문 안쪽')
             next()
         }
-        next()
+
     })
+    next()
 }
 
 
 
-export { dir_init, storage, fileFilter, fileHandler }
+export { dir_init, fileFilter, fileHandler }

@@ -18,12 +18,12 @@ class Profile {
         return image
     }
 
-    static async deleteProfile(id){
-        return await ProfileModel.deleteOne({id});
+    static async deleteProfile(user_id){
+        return await ProfileModel.deleteOne({user_id});
     }
 
-    static async updateProfile({ id, toUpdate }){
-        const filter = { id }
+    static async updateProfile({ user_id, toUpdate }){
+        const filter = { user_id }
         const update = { '$set' : toUpdate }
         const option = { returnOriginal: false }
 

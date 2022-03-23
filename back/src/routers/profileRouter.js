@@ -1,9 +1,7 @@
 import { Router } from 'express'
 import { login_required } from "../middlewares/login_required";
-import { storage, dir_init, fileHandler  } from "../middlewares/fileUpload";
-import is from "@sindresorhus/is";
+import { dir_init, fileHandler  } from "../middlewares/fileUpload";
 import { profileService } from "../services/profileService";
-import multer from "multer";
 
 const profileRouter = Router()
 profileRouter.use(login_required)
@@ -11,7 +9,7 @@ profileRouter.use(login_required)
 profileRouter.post('/profile/create',
     dir_init,
     (req, res, next)=>{
-    fileHandler(req, res, next, async (err)  => {
+    fileHandler(req, res, async (err)  => {
         try{
             if(!req.file){
                 throw new Error('파일이 전송되지 않았습니다.')
@@ -26,7 +24,7 @@ profileRouter.post('/profile/create',
             if(newProfile.errorMessage){
                 throw new Error(newProfile.errorMessage)
             }
-            res.status(200).json(newProfile)
+            res.status(201).json(newProfile)
         }catch (e) {
             next(e)
         }
@@ -52,17 +50,17 @@ profileRouter.get('/profile/:user_id', async(req, res, next) => {
 
 profileRouter.put('/profile/:user_id',
     (req, res, next) => {
-        fileHandler(req, res, next, async (err)  => {
+        fileHandler(req, res, async (err)  => {
             try{
                 if(!req.file){
                     throw new Error('파일이 전송되지 않았습니다.')
                 }
 
                 console.log('req.file>>>', req.file)
-                const { destination, filename } = req.file
                 const { user_id } = req.params
+                const toUpdate = { file_name: req.file.filename, path_name: req.file.destination }
 
-                const updatedProfile = await profileService.setProfile({user_id, path_name: destination, file_name: filename})
+                const updatedProfile = await profileService.setProfile({user_id, toUpdate})
 
                 if(updatedProfile.errorMessage){
                     throw new Error(updatedProfile.errorMessage)
@@ -74,6 +72,16 @@ profileRouter.put('/profile/:user_id',
 
         })
 
+})
+
+profileRouter.delete('/profile/:user_id', async (req, res, next) => {
+    const { user_id } = req.params
+    const result = await profileService.deleteProfile({user_id})
+    if(result.errorMessage){
+        throw new Error(result.errorMessage)
+    }
+
+    res.status(200).json(result)
 })
 
 export { profileRouter }
