@@ -27,6 +27,7 @@ function Projects({ portfolioOwnerId, isEditable }) {
             project={project}
             setProjects={setProjects}
             isEditable={isEditable}
+            portfolioOwnerId={portfolioOwnerId}
           />
         ))}
         {isEditable && (
