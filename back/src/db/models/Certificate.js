@@ -28,6 +28,10 @@ class Certificate {
       option
     );
   }
+
+  static async deleteByUserId(user_id) {
+    return await CertificateModel.deleteMany({ user_id });
+  }
 }
 
 export { Certificate };

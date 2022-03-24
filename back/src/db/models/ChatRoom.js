@@ -40,6 +40,10 @@ class ChatRoom {
       option
     );
   }
+
+  static async deleteByUserId(user_id) {
+    return await ChatRoomModel.deleteMany({ user_id });
+  }
 }
 
 export { ChatRoom };

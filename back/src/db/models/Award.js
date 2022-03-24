@@ -30,8 +30,11 @@ class Award {
     }
 
     static async findByUserId({ user_id }){
-        const awards = await AwardModel.find({ user_id })
-        return awards
+        return await AwardModel.find({ user_id })
+    }
+
+    static async deleteByUserId( user_id ){
+        return await AwardModel.deleteMany({ user_id })
     }
 }
 

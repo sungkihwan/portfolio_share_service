@@ -21,10 +21,10 @@ const ChatRoomSchema = new Schema({
         type: String,
         required: false,
     },
-    participating_users: {
-        type: [User],
-        required: false,
-    },
+    // participating_users: {
+    //     type: [User],
+    //     required: false,
+    // },
     access_count: {
         type: Number,
         required: false,
@@ -32,7 +32,7 @@ const ChatRoomSchema = new Schema({
 },{
     timestamps: true,
 })
-participation_count
+
 const ChatRoomModel = model('ChatRoom', ChatRoomSchema)
 
 export { ChatRoomModel }

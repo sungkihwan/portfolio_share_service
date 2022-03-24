@@ -28,6 +28,10 @@ class Project {
     static async findAllByUserId(user_id) {
         return await ProjectModel.find({ user_id });
     }
+
+    static async deleteByUserId(user_id) {
+        return await ProjectModel.deleteMany({ user_id });
+    }
 }
 
 export { Project };
