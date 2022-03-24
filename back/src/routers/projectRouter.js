@@ -2,6 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { projectService } from "../services/projectService";
+import moment from 'moment';
 
 const projectRouter = Router();
 
@@ -13,6 +14,24 @@ projectRouter.post("/project/create", async (req, res, next) => {
         if (is.emptyObject(req.body)) {
             throw new Error(
                 "headers의 Content-Type을 application/json으로 설정해주세요"
+            );
+        }
+        
+        const fromDateValidation = moment(req.body.from_date, 'YYYY-MM-DD', true).isValid();
+        const toDateValidation = moment(req.body.to_date, 'YYYY-MM-DD', true).isValid();
+        
+        if (!fromDateValidation || !toDateValidation) {
+            throw new Error(
+                "날짜 형식은 YYYY-MM-DD 이어야 합니다."
+            );
+        }
+
+        const from_date = new Date(req.body.from_date);
+        const to_date = new Date(req.body.to_date);
+
+        if (from_date > to_date) {
+            throw new Error(
+                "시작일보다 종료일이 빠릅니다."
             );
         }
 
@@ -71,6 +90,35 @@ projectRouter.put("/projects/:id", async (req, res, next) => {
         const description = req.body.description ?? null;
         const from_date = req.body.from_date ?? null;
         const to_date = req.body.to_date ?? null;
+
+        if (from_date) {
+            const fromDateValidation = moment(from_date, 'YYYY-MM-DD', true).isValid();
+            if (!fromDateValidation) {
+                throw new Error(
+                    "날짜 형식은 YYYY-MM-DD 이어야 합니다."
+                );
+            }
+        }
+
+        if (to_date) {
+            const toDateValidation = moment(to_date, 'YYYY-MM-DD', true).isValid();
+            if (!toDateValidation) {
+                throw new Error(
+                    "날짜 형식은 YYYY-MM-DD 이어야 합니다."
+                );
+            }
+        }
+
+        if (from_date && to_date) {
+            const from_dateValid = new Date(from_date);
+            const to_dateValid = new Date(to_date);
+
+            if (from_dateValid > to_dateValid) {
+                throw new Error(
+                    "시작일보다 종료일이 빠릅니다."
+                );
+            }
+        }
 
         const toUpdate = { title, description, from_date, to_date };
 

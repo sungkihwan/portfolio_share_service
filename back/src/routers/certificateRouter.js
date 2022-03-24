@@ -2,6 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { certificateService } from "../services/certificateService";
+import moment from 'moment';
 
 const certificateRouter = Router();
 certificateRouter.use(login_required);
@@ -12,6 +13,14 @@ certificateRouter.post("/certificate/create", async (req, res, next) => {
       throw new Error(
         "headers의 Content-Type을 application/json으로 설정해주세요"
       );
+    }
+
+    const whenDateValidation = moment(req.body.when_date, 'YYYY-MM-DD', true).isValid();
+        
+    if (!whenDateValidation) {
+        throw new Error(
+            "날짜 형식은 YYYY-MM-DD 이어야 합니다."
+        );
     }
 
     // 데이터를 db에 추가하기
@@ -62,7 +71,17 @@ certificateRouter.put("/certificates/:id", async (req, res, next) => {
     const description = req.body.description ?? null;
     const when_date = req.body.when_date ?? null;
 
-    const updatedCertificate = await certificateService.update(req.params.id, {
+    if (when_date) {
+      const whenDateValidation = moment(when_date, 'YYYY-MM-DD', true).isValid();
+        
+      if (!whenDateValidation) {
+          throw new Error(
+              "날짜 형식은 YYYY-MM-DD 이어야 합니다."
+          );
+      }
+    }
+
+    const updatedCertificate = await certificateService.updateById(req.params.id, {
       title,
       description,
       when_date,

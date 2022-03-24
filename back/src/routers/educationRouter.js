@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { login_required } from "../middlewares/login_required";
 import { educationService } from "../services/educationService";
-import {awardService} from "../services/awardService";
+import is from "@sindresorhus/is";
 
 const educationRouter = Router()
 educationRouter.use(login_required)
@@ -9,6 +9,11 @@ educationRouter.use(login_required)
 educationRouter.post('/education/create', async (req, res, next) => {
 
     try{
+        if (is.emptyObject(req.body)) {
+            throw new Error(
+                "headers의 Content-Type을 application/json으로 설정해주세요"
+            );
+        }
         const {user_id, school, major, position} = req.body
         const newEducation = await educationService.create({
                 user_id,

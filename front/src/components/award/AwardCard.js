@@ -7,9 +7,12 @@ function AwardCard({ award, setIsEditing, isEditable, setIsDeleted }) {
     if (window.confirm('삭제하시겠습니까?')) {
       Api.delete(`awards/${award.id}`).then(res => {
         console.log(res.data);
+        if (res.data) {
+          setIsDeleted(true);
+          alert('삭제되었습니다.');
+        }
+      })
 
-      });
-      setIsDeleted(true);
     };
   };
 
