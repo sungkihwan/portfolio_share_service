@@ -153,30 +153,21 @@ class userAuthService {
   }
 
   static async delete({ user_id }) {
-    const user = await User.findById({ user_id });
-
-    // db에서 찾지 못한 경우, 에러 메시지 반환
-    if (!user) {
-      const errorMessage =
-        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
-      return { errorMessage };
-    }
-
-    await Promise.allSettled(
+    let deleted = true;
+    // 트랜잭션이 있으면 좋겠음
+    await Promise.allSettled([
       User.deleteByUserId(user_id),
       Project.deleteByUserId(user_id),
       Education.deleteByUserId(user_id),
       Certificate.deleteByUserId(user_id),
-      Award.deleteByUserId(user_id)
-    ).then(() => {
-      return '삭제 완료'
-    }).catch(() => {
-      const errorMessage =
-        "유저 삭제 중 에러 발생";
-      return { errorMessage }
-    })
+      Award.deleteByUserId(user_id),
+    ])
+    .catch(err => {
+      console.log(err)
+      deleted = false;
+    });
 
-    return
+    return deleted;
   }
 }
 
