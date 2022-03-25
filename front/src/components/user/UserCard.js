@@ -8,12 +8,18 @@ function UserCard({ user, setIsEditing, isEditable, isNetwork, portfolioOwnerId 
   async function userDelete() {
     const user_id = portfolioOwnerId;
 
-    if (window.confirm('회원 탈퇴를 진행합니다.')) {
-      await Api.delete(`users/delete/${user_id}`)
+    if (window.confirm('회원 탈퇴를 진행합니다.\n정말 탈퇴하시겠습니까?')) {
+      await Api.delete(`user/delete/${user_id}`)
         .then((res) => {
           console.log(res);
-          navigate('/');
-        });
+        })
+        .then(
+          alert("탈퇴 완료되었습니다."))
+        .then(
+          navigate('/login')
+        );
+
+
     } else return;
   };
 
