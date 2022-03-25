@@ -2,6 +2,7 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import generator from "generate-password";
 
 class userAuthService {
   static async addUser({ name, email, password }) {
@@ -10,7 +11,7 @@ class userAuthService {
     if (user) {
       const errorMessage =
         "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
-      return { errorMessage };
+      return { errorMessage, id: user.email };
     }
 
     // 비밀번호 해쉬화
@@ -18,6 +19,27 @@ class userAuthService {
 
     // id 는 유니크 값 부여
     const id = uuidv4();
+    const newUser = { id, name, email, password: hashedPassword };
+
+    // db에 저장
+    const createdNewUser = await User.create({ newUser });
+    createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
+
+    return createdNewUser;
+  }
+
+  static async addUserWithKakao({id, name, email, password}){
+
+    const user = await User.findByEmail({ email });
+    if (user) {
+      const errorMessage =
+          "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
+      return { errorMessage, id: user.email };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // id 는 유니크 값 부여
     const newUser = { id, name, email, password: hashedPassword };
 
     // db에 저장
@@ -124,6 +146,40 @@ class userAuthService {
     }
 
     return user;
+  }
+
+  static async getUserInfoByKakaoId({id, name, email}){
+    let user = await User.findByKakaoId(id)
+    if (!user) {
+      const password = generator.generate({ length: 12, numbers: true })
+
+      user = await userAuthService.addUserWithKakao({
+        id,
+        name,
+        email,
+        password,
+      });
+      if(user.errorMessage){
+        throw new Error(user.errorMessage)
+      }
+    }
+
+    const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
+    const token = jwt.sign({ user_id: user.id }, secretKey);
+
+    // 반환할 loginuser 객체를 위한 변수 설정
+    const description = user.description;
+
+    const loginUser = {
+      token,
+      id : user.id,
+      email,
+      name,
+      description,
+      errorMessage: null,
+    };
+
+    return loginUser;
   }
 }
 
