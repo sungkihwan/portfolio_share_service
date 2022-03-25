@@ -33,6 +33,10 @@ class Education {
         const posts = await EducationModel.find({ user_id })
         return posts
     }
+
+    static async deleteByUserId(user_id){
+        return await EducationModel.deleteMany({ user_id })
+    }
 }
 
 export { Education }
