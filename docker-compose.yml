@@ -1,15 +1,15 @@
 version: '3'
 services:
-  front:
-    image: singahu/react_test
+  frontend_server:
+    image: singahu/react_portfolio_app:0.0.1
     restart: "on-failure"
     ports:
       - 80:80
     networks:
       - portfolio-service
 
-  back:
-    image: singahu/node-web-app
+  backend_server:
+    image: singahu/node_portfolio_app:0.0.1
     restart: "on-failure"
     ports:
       - 5001:5001
@@ -18,3 +18,4 @@ services:
 
 networks:
   portfolio-service:
+
