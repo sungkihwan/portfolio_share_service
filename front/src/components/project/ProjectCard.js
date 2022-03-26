@@ -13,10 +13,15 @@ function ProjectCard({
 
     const user_id = portfolioOwnerId;
     try {
-      await Api.delete('projects', project.id);
+      if (window.confirm('삭제하시겠습니까?')) {
+        await Api.delete('projects', project.id);
 
-      const res = await Api.get('projectlist', user_id);
-      setProjects(res.data);
+        const res = await Api.get('projectlist', user_id);
+        if (res.data) {
+          setProjects(res.data);
+          alert('삭제되었습니다.');
+        }
+      }
     } catch (e) {
       console.log(e);
     }

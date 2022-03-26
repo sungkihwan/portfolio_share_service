@@ -13,10 +13,16 @@ function EducationCard({
 
     const user_id = portfolioOwnerId;
     try {
-      await Api.delete('educations', education.id);
+      if (window.confirm('삭제하시겠습니까?')) {
+        await Api.delete('educations', education.id);
 
-      const res = await Api.get('educationlist', user_id);
-      setEducations(res.data);
+        const res = await Api.get('educationlist', user_id);
+        if (res.data) {
+          setEducations(res.data);
+          alert('삭제되었습니다.');
+        }
+      }
+
     } catch (e) {
       console.log(e);
     }
