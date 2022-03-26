@@ -42,7 +42,7 @@ profileRouter.get('/profile/:user_id', async(req, res, next) => {
         }
 
         const response = {success: 'ok', path: profile.path_name + profile.file_name}
-        res.status(200).json(response)
+        res.sendFile(`${profile.path_name}${profile.file_name}`)
     }catch (e) {
         next(e)
     }

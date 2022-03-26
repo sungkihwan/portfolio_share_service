@@ -155,13 +155,9 @@ userAuthRouter.delete(
   async function (req, res, next) {
     try {
       const user_id = req.params.id;
-      const currentUserInfo = await userAuthService.delete({ user_id });
+      const deleted = await userAuthService.delete({ user_id });
 
-      if (currentUserInfo.errorMessage) {
-        throw new Error(currentUserInfo.errorMessage);
-      }
-
-      res.status(200).send(currentUserInfo);
+      res.status(200).send(deleted);
     } catch (error) {
       next(error);
     }
