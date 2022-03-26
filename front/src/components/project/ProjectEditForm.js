@@ -8,12 +8,10 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
   const [title, setTitle] = useState(currentProject.title);
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(currentProject.description);
-  //useState로 from_date 상태를 생성함
-  const [from_date, setFrom_date] = useState(
-    new Date(currentProject.from_date)
-  );
-  //useState로 to_date 상태를 생성함
-  const [to_date, setTo_date] = useState(new Date(currentProject.to_date));
+  //useState로 fromDate 상태를 생성함
+  const [fromDate, setFromDate] = useState(new Date(currentProject.from_date));
+  //useState로 toDate 상태를 생성함
+  const [toDate, setToDate] = useState(new Date(currentProject.to_date));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,15 +19,15 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
 
     // currentProject의 user_id를 user_id 변수에 할당함.
     const user_id = currentProject.user_id;
-    const from_dateToString = from_date.toISOString().substring(0, 10);
-    const to_dateToString = to_date.toISOString().substring(0, 10);
+    const fromDateToString = fromDate.toISOString().substring(0, 10);
+    const toDateToString = toDate.toISOString().substring(0, 10);
     // "projects/수상 id" 엔드포인트로 PUT 요청함.
     await Api.put(`projects/${currentProject.id}`, {
       user_id,
       title,
       description,
-      from_date: from_dateToString,
-      to_date: to_dateToString,
+      from_date: fromDateToString,
+      to_date: toDateToString,
     });
 
     // "projectlist/유저id" 엔드포인트로 GET 요청함.
@@ -63,15 +61,12 @@ function ProjectEditForm({ currentProject, setProjects, setIsEditing }) {
       <Form.Group controlId='formBasicDatepicker' className='mt-3 row'>
         <div className='col-auto'>
           <DatePicker
-            selected={from_date}
-            onChange={(date) => setFrom_date(date)}
+            selected={fromDate}
+            onChange={(date) => setFromDate(date)}
           />
         </div>
         <div className='col-auto'>
-          <DatePicker
-            selected={to_date}
-            onChange={(date) => setTo_date(date)}
-          />
+          <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
         </div>
       </Form.Group>
 

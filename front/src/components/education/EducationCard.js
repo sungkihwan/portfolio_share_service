@@ -1,6 +1,27 @@
 import { Card, Button, Row, Col } from 'react-bootstrap';
+import * as Api from '../../api';
+function EducationCard({
+  education,
+  isEditable,
+  setIsEditing,
+  portfolioOwnerId,
+  setEducations,
+}) {
+  const handleClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-function EducationCard({ education, isEditable, setIsEditing }) {
+    const user_id = portfolioOwnerId;
+    try {
+      await Api.delete('educations', education.id);
+
+      const res = await Api.get('educationlist', user_id);
+      setEducations(res.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Card.Text>
       <Row className='align-items-center'>
@@ -20,6 +41,18 @@ function EducationCard({ education, isEditable, setIsEditing }) {
               className='mr-3'
             >
               편집
+            </Button>
+          </Col>
+        )}
+        {isEditable && (
+          <Col xs lg='1'>
+            <Button
+              variant='outline-danger'
+              size='sm'
+              onClick={handleClick}
+              className='mr-3'
+            >
+              삭제
             </Button>
           </Col>
         )}
