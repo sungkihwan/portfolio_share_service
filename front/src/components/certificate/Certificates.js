@@ -7,12 +7,20 @@ import CertificateAddForm from './CertificateAddForm';
 function Certificates({ portfolioOwnerId, isEditable }) {
   const [certificates, setCertificates] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
     Api.get('certificatelist', portfolioOwnerId).then((res) =>
       setCertificates(res.data)
     );
   }, [portfolioOwnerId]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      Api.get(`certificatelist/${portfolioOwnerId}`).then((res) => setCertificates(res.data));
+      setIsDeleted(false);
+    }
+  }, [isDeleted]);
 
   return (
     <>
@@ -25,6 +33,7 @@ function Certificates({ portfolioOwnerId, isEditable }) {
               certificate={certificate}
               setCertificates={setCertificates}
               isEditable={isEditable}
+              setIsDeleted={setIsDeleted}
             />
           ))}
 

@@ -3,6 +3,10 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
 import { body, validationResult } from 'express-validator';
+import generator from 'generate-password';
+import 'dotenv/config'
+import qs from 'querystring'
+import {getUserInfo} from "../services/kakaoLoginService";
 
 const userAuthRouter = Router();
 
@@ -45,6 +49,47 @@ userAuthRouter.post(
     next(error);
   }
 });
+
+userAuthRouter.post('/user/kakao/login', async (req, res, next) => {
+  try {
+    const { token } = req.body
+    console.log(token)
+    const userInfo = await getUserInfo(token)
+
+    console.log(userInfo)
+    // userInfo.nickname, userInfo.email => 이메일 검색으로 없으면 회원가입
+    // 회원 고유 아이디 정보 받아와서 userInfo.id를 디비 user.id에 저장
+    //다시 로그인 했을 시 유저있으면 그대로 리턴 없으면 생성 후 리턴
+
+    const name = userInfo.kakao_account.profile.nickname
+    const email = userInfo.kakao_account.email
+    const id = userInfo.id
+
+    const findUser = await userAuthService.getUserInfoByKakaoId({id, name, email})
+
+    if(findUser.errorMessage){
+      const password = generator.generate({ length: 12, numbers: true })
+
+      const newUser = await userAuthService.addUserWithKakao({
+        id,
+        name,
+        email,
+        password,
+      });
+      if(newUser.errorMessage){
+        throw new Error(newUser.errorMessage)
+      }
+
+      return res.status(201).json(newUser)
+    }
+
+    res.status(200).json(findUser)
+
+  } catch (e) {
+    next(e)
+  }
+})
+
 
 userAuthRouter.post("/user/login", async function (req, res, next) {
   try {
@@ -149,13 +194,20 @@ userAuthRouter.get(
   }
 );
 
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
-  res
-    .status(200)
-    .send(
-      `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
+userAuthRouter.delete(
+  "/user/delete/:id",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.id;
+      const deleted = await userAuthService.delete({ user_id });
+
+      res.status(200).send(deleted);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 
 export { userAuthRouter };

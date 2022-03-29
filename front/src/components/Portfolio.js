@@ -9,6 +9,7 @@ import Certificates from './certificate/Certificates';
 import Awards from './award/Awards';
 import Educations from './education/Educations';
 import Projects from './project/Projects';
+import Spinner from './Spinner';
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function Portfolio() {
   }, [params, userState, navigate]);
 
   if (!isFetchCompleted) {
-    return 'loading...';
+    return <Spinner />;
   }
 
   return (

@@ -6,23 +6,23 @@ import DatePicker from 'react-datepicker';
 const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [from_date, setFrom_date] = useState(new Date());
-  const [to_date, setTo_date] = useState(new Date());
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const user_id = portfolioOwnerId;
-    const from_dateToString = from_date.toISOString().substring(0, 10);
-    const to_dateToString = to_date.toISOString().substring(0, 10);
+    const fromDateToString = fromDate.toISOString().substring(0, 10);
+    const toDateToString = toDate.toISOString().substring(0, 10);
 
     await Api.post('project/create', {
       user_id: portfolioOwnerId,
       title,
       description,
-      from_date: from_dateToString,
-      to_date: to_dateToString,
+      from_date: fromDateToString,
+      to_date: toDateToString,
     });
 
     const res = await Api.get('projectlist', user_id);
@@ -52,15 +52,12 @@ const ProjectAddForm = ({ portfolioOwnerId, setProjects, setIsAdding }) => {
       <Form.Group controlId='formBasicDatepicker' className='mt-3 row'>
         <div className='col-auto'>
           <DatePicker
-            selected={from_date}
-            onChange={(date) => setFrom_date(date)}
+            selected={fromDate}
+            onChange={(date) => setFromDate(date)}
           />
         </div>
         <div className='col-auto'>
-          <DatePicker
-            selected={to_date}
-            onChange={(date) => setTo_date(date)}
-          />
+          <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
         </div>
       </Form.Group>
 

@@ -34,6 +34,7 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     try {
       // "user/login" 엔드포인트로 post요청함.
       const res = await Api.post("user/login", {
@@ -55,7 +56,8 @@ function LoginForm() {
       // 기본 페이지로 이동함.
       navigate("/", { replace: true });
     } catch (err) {
-      console.log("로그인에 실패하였습니다.\n", err);
+      alert(err.response.data);
+
     }
   };
 

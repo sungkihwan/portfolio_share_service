@@ -7,10 +7,18 @@ import AwardAddForm from './AwardAddForm';
 function Awards({ portfolioOwnerId, isEditable }) {
   const [awards, setAwards] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
     Api.get('awardlist', portfolioOwnerId).then((res) => setAwards(res.data));
   }, [portfolioOwnerId]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      Api.get(`awardlist/${portfolioOwnerId}`).then((res) => setAwards(res.data));
+      setIsDeleted(false);
+    }
+  }, [isDeleted]);
 
   return (
     <Card>
@@ -23,6 +31,7 @@ function Awards({ portfolioOwnerId, isEditable }) {
               award={award}
               setAwards={setAwards}
               isEditable={isEditable}
+              setIsDeleted={setIsDeleted}
             />
           ))}
         </Card.Text>
